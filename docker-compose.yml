@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres-hospital
+    image: postgres
+    environment:
+      POSTGRES_USER: sjensen
+      POSTGRES_PASSWORD: sal
+      PGDATA: /data/postgres
+      POSTGRES_DB: users
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - db
+    restart: unless-stopped
+  spring-boot-jpa-docker-webapp:
+    image: gradle
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+
+networks:
+  db:
+    driver: bridge
+volumes:
+  db:
+
